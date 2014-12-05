@@ -20,6 +20,16 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="index.html" />
+    <Content Include="sigmajs\plugins\sigma.layout.forceAtlas2.min.js" />
+    <Content Include="sigmajs\plugins\sigma.parsers.gexf.min.js" />
+    <Content Include="sigmajs\plugins\sigma.parsers.json.min.js" />
+    <Content Include="sigmajs\plugins\sigma.plugins.animate.min.js" />
+    <Content Include="sigmajs\plugins\sigma.plugins.dragNodes.min.js" />
+    <Content Include="sigmajs\plugins\sigma.plugins.filter.min.js" />
+    <Content Include="sigmajs\plugins\sigma.plugins.neighborhoods.min.js" />
+    <Content Include="sigmajs\plugins\sigma.renderers.customShapes.min.js" />
+    <Content Include="sigmajs\plugins\sigma.statistics.HITS.min.js" />
+    <Content Include="sigmajs\sigma.min.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +37,9 @@
     <TypeScriptCompile Include="Chromosome.ts" />
     <TypeScriptCompile Include="ChromosomeUtils.ts" />
     <TypeScriptCompile Include="Point.ts" />
+    <TypeScriptCompile Include="SigmaAdapter.ts" />
+    <TypeScriptCompile Include="sigmajs\sigmajs.d.ts" />
+    <TypeScriptCompile Include="Simulator.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">

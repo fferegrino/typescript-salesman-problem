@@ -6,14 +6,25 @@
     <title>TypeScript HTML App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="sigmajs/sigma.min.js"></script>
+    <script src="SigmaAdapter.js"></script>
     <script src="ChromosomeUtils.js"></script>
     <script src="Point.js"></script>
     <script src="Chromosome.js"></script>
+    <script src="Simulator.js"></script>
     <script src="app.js"></script>
+    <style>
+        #container {
+            position: fixed;
+            display: block;
+            margin: 0 auto;
+            width: 600px;
+            height: 600px;
+        }
+    </style>
 </head>
 <body>
-    <h1>TypeScript HTML App</h1>
-
-    <div id="content"></div>
+    <h1 id="costo">TypeScript HTML App</h1>
+    <div id="container"></div>
 </body>
 </html>

@@ -28,6 +28,20 @@
             configurable: true
         });
 
+        Object.defineProperty(Point.prototype, "name", {
+            get: function () {
+                return this._name;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Point.prototype.equals = function (other) {
+            if (other != undefined)
+                return this._name === other.name;
+            return false;
+        };
+
         Point.prototype.distance = function (x, y) {
             var nX = this._x - x;
             var nY = this._y - y;

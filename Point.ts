@@ -9,7 +9,7 @@
             this._x = x;
             this._y = y;
         }
-        
+
         get x(): number {
             return this._x;
         }
@@ -22,6 +22,17 @@
         }
         set y(y: number) {
             this._y = y;
+        }
+
+
+        get name(): string {
+            return this._name;
+        }
+
+        public equals(other: Point): boolean {
+            if (other != undefined)
+                return this._name === other.name;
+            return false;
         }
 
         private distance(x: number, y: number): number {

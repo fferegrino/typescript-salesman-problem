@@ -1,24 +1,33 @@
 ﻿
 
 window.onload = () => {
-    var el = document.getElementById('content');
-    var points: Tsp.Point[] = [new Tsp.Point("A", 1, 1)
-        , new Tsp.Point("A", 1, 2)
-        , new Tsp.Point("A", 3, 4)
-        , new Tsp.Point("A", 1, 66)
-        , new Tsp.Point("A", 5, 19)
-        , new Tsp.Point("A", 53, 41)];
-    var cromosoma1 = new Tsp.Chromosome(points);
-    for (var i = 0; i < cromosoma1.length; i++) {
-        document.getElementById("content").innerText += cromosoma1.getPoint(i).x + " " + cromosoma1.getPoint(i).y + ";";
-    }
-    document.getElementById("content").innerText += "::::Costo " + cromosoma1.cost;
+    //var el = document.getElementById('content');
+    var mutacion: number = 0.4;
+    var longitudCorte: number = 4;
 
+    var points = [
+        new Tsp.Point("A", 1.3, 1)
+        , new Tsp.Point("B", 1.6, 2.5)
+        , new Tsp.Point("C", 2, 3.5)
+        , new Tsp.Point("D", 2, 1.3)
+        , new Tsp.Point("E", 2.3, 2.7)
+        , new Tsp.Point("F", 2.6, 3)
+        , new Tsp.Point("G", 3, 1.6)
+        , new Tsp.Point("H", 3.3, 2)
+        , new Tsp.Point("I", 3.6, 3)];
 
+    var simulator = new Tsp.Simulator(points, 10, 50);
+    simulator.initialize(created);
+    simulator.start(generatedSolution);
 
-    var cromosoma2 = new Tsp.Chromosome(points);
-    for (var i = 0; i < cromosoma2.length; i++) {
-        document.getElementById("content").innerText += cromosoma2.getPoint(i).x + " " + cromosoma2.getPoint(i).y + ";";
-    }
-    document.getElementById("content").innerText += "::::Costo " + cromosoma2.cost;
 };
+
+
+function created(points) {
+    View.createSigma("container", points);
+}
+
+function generatedSolution(chromosome:Tsp.Chromosome) {
+    View.replaceEdges(chromosome);
+    document.getElementById("costo").innerText = chromosome.cost.toString();
+}
