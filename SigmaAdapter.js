@@ -22,10 +22,29 @@ var View;
                 target: chromosome.getPoint(i + 1).name,
                 color: edgeColor
             });
-            sgma.refresh();
         }
     }
     View.drawEdges = drawEdges;
+
+    function drawEdgesFromArray(array) {
+        for (var i = 0; i < array.length - 1; i++) {
+            sgma.graph.addEdge({
+                id: "n" + i,
+                source: array[i]._name,
+                target: array[i + 1]._name,
+                color: edgeColor
+            });
+        }
+    }
+    View.drawEdgesFromArray = drawEdgesFromArray;
+
+    function replaceEdgesFromArray(array) {
+        sgma.graph.clear();
+        drawNodes();
+        drawEdgesFromArray(array);
+        sgma.refresh();
+    }
+    View.replaceEdgesFromArray = replaceEdgesFromArray;
 
     function replaceEdges(chromosome) {
         sgma.graph.clear();

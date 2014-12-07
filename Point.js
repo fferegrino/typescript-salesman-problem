@@ -49,6 +49,10 @@
             return Math.sqrt(Math.pow(nX, 2) + Math.pow(nY, 2));
         };
 
+        Point.prototype.toString = function () {
+            return this.name + "(" + this.x + "," + this.y + ")";
+        };
+
         Point.prototype.distanceToPoint = function (point) {
             return this.distance(point._x, point._y);
         };

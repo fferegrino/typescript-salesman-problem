@@ -1,5 +1,5 @@
 ﻿window.onload = function () {
-    //var el = document.getElementById('content');
+    var container = document.getElementById('container');
     var mutacion = 0.4;
     var longitudCorte = 4;
 
@@ -14,9 +14,18 @@
         new Tsp.Point("H", 3.3, 2),
         new Tsp.Point("I", 3.6, 3)];
 
-    var simulator = new Tsp.Simulator(points, 10, 50);
-    simulator.initialize(created);
-    simulator.start(generatedSolution);
+    //var simulator = new Tsp.Simulator(points, 10, 2);
+    //simulator.initialize(created);
+    //simulator.start(generatedSolution);
+    View.createSigma('container', points);
+    var str = JSON.stringify(points);
+
+    var worker = new Worker('worker.js');
+    worker.onmessage = function (evt) {
+        View.replaceEdgesFromArray(JSON.parse(evt.data).points);
+    };
+
+    worker.postMessage(str);
 };
 
 function created(points) {

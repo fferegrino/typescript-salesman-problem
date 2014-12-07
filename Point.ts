@@ -42,6 +42,10 @@
             return Math.sqrt(Math.pow(nX, 2) + Math.pow(nY, 2));
         }
 
+        public toString(): string {
+            return this.name + "(" + this.x + "," + this.y + ")";
+        }
+
         public distanceToPoint(point: Point): number {
             return this.distance(point._x, point._y);
         }

@@ -35,22 +35,22 @@
         public start(callback: any) {
             this._callback = callback;
             var self = this;
-            while (this._currentGeneration++ <= this._maxGenerations) {
-                var iOff: number = this._crossPoblation;
-                for (var j = 0; j < this._favoredPoblation; j++) {
-                    var children = Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1]);
-                    if (iOff < this._chromosomes.length - 1) {
-                        this._chromosomes[iOff] = children[0];
-                        this._chromosomes[iOff+1] = children[1];
-                    }
-                    iOff += 2;
-                }
-                Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
-            }
-            if (callback) {
-                callback(this._chromosomes[0]);
-            }
-            //setTimeout(() => { self.f(); }, 1000);
+            //while (this._currentGeneration++ <= this._maxGenerations) {
+            //    var iOff: number = this._crossPoblation;
+            //    for (var j = 0; j < this._favoredPoblation; j++) {
+            //        var children = Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1]);
+            //        if (iOff < this._chromosomes.length - 1) {
+            //            this._chromosomes[iOff] = children[0];
+            //            this._chromosomes[iOff+1] = children[1];
+            //        }
+            //        iOff += 2;
+            //    }
+            //    Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
+            //}
+            //if (callback) {
+            //    callback(this._chromosomes[0]);
+            //}
+            setTimeout(() => { self.f(); }, 1000);
             //while (this._currentGeneration <= this._maxGenerations) {
             //    this._currentGeneration++;
             //}
@@ -60,7 +60,7 @@
         private _callback;
         f() {
             var self = this;
-            //setTimeout(() => { self.f(); }, 1000);
+            setTimeout(() => { self.f(); }, 1000);
             if (this._callback) {
                 this._callback(this._chromosomes[(this._i++) % this._ncrhoms]);
             }
