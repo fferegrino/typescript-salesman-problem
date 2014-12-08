@@ -4,11 +4,25 @@
         return Math.floor((Math.random() * max) + min);
     }
     Tsp.nextInt = nextInt;
+    function next() {
+        return Math.random();
+    }
+    Tsp.next = next;
+
+    function truncate(n, digits) {
+        var multiplier = Math.pow(10, digits), adjustedNum = n * multiplier, truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+        return truncatedNum / multiplier;
+    }
+    Tsp.truncate = truncate;
+    ;
 
     function quickSort(c, left, right) {
         var i = left;
         var j = right;
         var mid = Math.floor((i + j) / 2);
+
+        //console.log("sort " + i + " " + j + " " + mid);
         var p = c[mid];
         var tmp;
         while (i <= j) {

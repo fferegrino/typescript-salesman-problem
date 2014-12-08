@@ -14,7 +14,7 @@
         }
         Simulator.prototype.initialize = function (callback) {
             for (var i = 0; i < this._ncrhoms; i++) {
-                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0);
+                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.5);
             }
             Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
             if (callback) {
@@ -25,25 +25,43 @@
         Simulator.prototype.start = function (callback) {
             this._callback = callback;
             var self = this;
+            while (this._currentGeneration <= this._maxGenerations) {
+                console.log(this._currentGeneration);
+                this._currentGeneration++;
+                var iOff = this._crossPoblation;
+                for (var j = 0; j < this._favoredPoblation; j++) {
+                    if (iOff < this._chromosomes.length - 1) {
+                        Tsp.Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1], this._chromosomes[iOff], this._chromosomes[iOff + 1]);
+                        this._chromosomes[iOff].mutar();
+                        this._chromosomes[iOff + 1].mutar();
+                        this._chromosomes[iOff].mutar();
+                        this._chromosomes[iOff + 1].mutar();
+                    }
+                    iOff += 2;
+                }
 
-            //while (this._currentGeneration++ <= this._maxGenerations) {
-            //    var iOff: number = this._crossPoblation;
-            //    for (var j = 0; j < this._favoredPoblation; j++) {
-            //        var children = Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1]);
-            //        if (iOff < this._chromosomes.length - 1) {
-            //            this._chromosomes[iOff] = children[0];
-            //            this._chromosomes[iOff+1] = children[1];
-            //        }
-            //        iOff += 2;
-            //    }
-            //    Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
-            //}
+                //var str = "";
+                //for (var xx = 0; xx < this._chromosomes.length; xx++) {
+                //    str += Tsp.truncate(this._chromosomes[xx].cost, 2) + ";";
+                //}
+                //console.log(str);
+                Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
+
+                //str = "";
+                //for (var xx = 0; xx < this._chromosomes.length; xx++) {
+                //    str += Tsp.truncate(this._chromosomes[xx].cost, 2) + ";";
+                //}
+                //console.log(str);
+                if (this._callback) {
+                    this._callback(this._chromosomes[0]);
+                    //this._callback(this._chromosomes[this._currentGeneration % this._chromosomes.length]);
+                }
+            }
+            console.log("Done");
             //if (callback) {
             //    callback(this._chromosomes[0]);
             //}
-            setTimeout(function () {
-                self.f();
-            }, 1000);
+            //setTimeout(() => { self.f(); }, 1000);
             //while (this._currentGeneration <= this._maxGenerations) {
             //    this._currentGeneration++;
             //}

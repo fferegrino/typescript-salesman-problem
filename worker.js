@@ -11,7 +11,7 @@ function startWork(pointsArray) {
     for (var i = 0; i < pointsArray.length; i++) {
         __points[i] = new Tsp.Point(pointsArray[i]._name, pointsArray[i]._x, pointsArray[i]._y);
     }
-    __simulator = new Tsp.Simulator(__points, 10, 0);
+    __simulator = new Tsp.Simulator(__points, 40, 200);
     __simulator.initialize();
     __simulator.start(function (chromosome) {
         postMessage(JSON.stringify(chromosome));

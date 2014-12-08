@@ -58,45 +58,89 @@
             this.points[i] = point;
         }
 
-        public static cyclicMate(parent1: Chromosome, parent2: Chromosome): Chromosome[] {
+        public toString(): string {
+            var a = "";
+            for (var i = 0; i < this._length; i++) {
+                a += this.points[i] != null ? this.points[i].name : "-";
+            }
+            a += ": " + truncate(this.cost, 3);
+            return a;
+        }
 
-            var results = [
-                new Chromosome(parent1.points, parent1._cutPoint, parent1._mutationProb)
-                , new Chromosome(parent1.points, parent1._cutPoint, parent2._mutationProb)
-            ];
+        public resetCost(): void {
+            this._cost = 0;
+        }
+
+        public mutar(): boolean {
+            if (this._mutationProb < Tsp.next()) {
+                var i = Tsp.nextInt(0, this._length - 1);
+                var j = Tsp.nextInt(0, this._length - 1)
+                var point = this.points[i];
+                this.points[i] = this.points[j];
+                this.points[j] = point;
+                return true;
+            }
+            return false;
+        }
+
+        public static cyclicMate(parent1: Chromosome, parent2: Chromosome, children1: Chromosome, children2: Chromosome): void {
+
+            //var results = [
+            //    new Chromosome(parent1.points, parent1._cutPoint, parent1._mutationProb)
+            //    , new Chromosome(parent1.points, parent1._cutPoint, parent2._mutationProb)
+            //];
+
+            //var useds = [new Array(parent1.length), new Array(parent2.length)];
+            for (var j = 0; j < parent1.length; j++) {
+                children1.setPoint(j, null);
+                children2.setPoint(j, null);
+            }
 
             var chromosomeLength = parent1.length;
             var startPointS1 = nextInt(0, chromosomeLength - 1);
-            var startPointS2 = startPointS1;
+            var startPointS2 = nextInt(0, chromosomeLength - 1);
 
             var ax1 = parent1.getPoint(startPointS1);
             var ax2: Point;
-
+            
             while (!ax1.equals(ax2)) {
                 ax2 = parent1.getPoint(startPointS1);
-                results[0].setPoint(startPointS1, ax2);
+                children1.setPoint(startPointS1, ax2);
                 var i: Point = parent2.getPoint(startPointS1);
                 startPointS1 = parent1.getPosition(i);
                 ax2 = i;
             }
-
             ax1 = parent2.getPoint(startPointS2);
             ax2 = null;
 
 
             while (!ax1.equals(ax2)) {
                 ax2 = parent2.getPoint(startPointS2);
-                results[1].setPoint(startPointS2, ax2);
+                children2.setPoint(startPointS2, ax2);
                 var i: Point = parent1.getPoint(startPointS2);
                 startPointS2 = parent2.getPosition(i);
                 ax2 = i;
             }
+            //console.log(parent1.toString());
+            //console.log(parent2.toString());
+            //console.log(children1.toString());
+            //console.log(children2.toString());
 
+            for (var iii = 0; iii < parent1.length; iii++) {
+                if (children1.getPoint(iii) == null) {
+                    children1.setPoint(iii, parent2.getPoint(iii));
 
-            //for (var ii = 0; ii < parent1.length; ii++) {
-            //    if()
-            //}
-            return results;
+                }
+
+                if (children2.getPoint(iii) == null) {
+                    children2.setPoint(iii, parent1.getPoint(iii));
+
+                }
+
+            }
+
+            children1.resetCost();
+            children2.resetCost();
         }
     }
 
