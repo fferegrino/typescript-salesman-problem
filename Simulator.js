@@ -1,22 +1,25 @@
 ﻿var Tsp;
 (function (Tsp) {
     var Simulator = (function () {
-        function Simulator(points, chromosomesCount, maxGenerations) {
-            this._ncrhoms = 10;
+        function Simulator(points, numeroCromosomas, maxGenerations) {
+            this._numeroCromosomas = 10;
             this._i = 0;
+            this._lastValue = 0;
+            this._repetition = 0;
             this._currentGeneration = 0;
             this._maxGenerations = maxGenerations;
             this._points = points;
-            this._crossPoblation = Math.floor(chromosomesCount / 2);
-            this._favoredPoblation = Math.floor(this._crossPoblation / 2);
-            this._ncrhoms = chromosomesCount;
-            this._chromosomes = new Array(this._ncrhoms);
+            this._poblacionNoFavorecida = Math.floor(numeroCromosomas / 2);
+            this._poblacionFavorecida = Math.floor(this._poblacionNoFavorecida / 2);
+            this._numeroCromosomas = numeroCromosomas;
+            this._chromosomes = new Array(this._numeroCromosomas);
+            console.log("Poblacion total " + numeroCromosomas + "; Poblacion favorecida: " + this._poblacionFavorecida + "; Poblacion no favorecida " + this._poblacionNoFavorecida);
         }
         Simulator.prototype.initialize = function (callback) {
-            for (var i = 0; i < this._ncrhoms; i++) {
-                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.5);
+            for (var i = 0; i < this._numeroCromosomas; i++) {
+                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.7);
             }
-            Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
+            this._chromosomes.sort(Tsp.chromosomeComparer);
             if (callback) {
                 callback(this._points);
             }
@@ -25,46 +28,39 @@
         Simulator.prototype.start = function (callback) {
             this._callback = callback;
             var self = this;
-            while (this._currentGeneration <= this._maxGenerations) {
-                console.log(this._currentGeneration);
+            while (this._currentGeneration <= this._maxGenerations && this._repetition < 100) {
+                //console.log(this._currentGeneration);
                 this._currentGeneration++;
-                var iOff = this._crossPoblation;
-                for (var j = 0; j < this._favoredPoblation; j++) {
-                    if (iOff < this._chromosomes.length - 1) {
-                        Tsp.Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1], this._chromosomes[iOff], this._chromosomes[iOff + 1]);
-                        this._chromosomes[iOff].mutar();
-                        this._chromosomes[iOff + 1].mutar();
-                        this._chromosomes[iOff].mutar();
-                        this._chromosomes[iOff + 1].mutar();
+                var offset = this._poblacionNoFavorecida;
+                for (var j = 0; j < this._poblacionFavorecida; j++) {
+                    if (offset < this._chromosomes.length - 1) {
+                        Tsp.Chromosome.cyclicMate(this._chromosomes[j], this._chromosomes[j + 1], this._chromosomes[offset], this._chromosomes[offset + 1]);
+                        this._chromosomes[offset].mutar();
+                        this._chromosomes[offset + 1].mutar();
+                        this._chromosomes[offset].mutar();
+                        this._chromosomes[offset + 1].mutar();
+                        this._chromosomes[offset].mutar();
+                        this._chromosomes[offset + 1].mutar();
+                        offset += 2;
                     }
-                    iOff += 2;
                 }
+                this._chromosomes.sort(Tsp.chromosomeComparer);
 
-                //var str = "";
-                //for (var xx = 0; xx < this._chromosomes.length; xx++) {
-                //    str += Tsp.truncate(this._chromosomes[xx].cost, 2) + ";";
-                //}
-                //console.log(str);
-                Tsp.quickSort(this._chromosomes, 0, this._chromosomes.length - 1);
-
-                //str = "";
-                //for (var xx = 0; xx < this._chromosomes.length; xx++) {
-                //    str += Tsp.truncate(this._chromosomes[xx].cost, 2) + ";";
-                //}
-                //console.log(str);
+                //console.log(this._repetition);
+                if (this._lastValue == this._chromosomes[0].cost) {
+                    for (var flat = 0; flat < this._poblacionFavorecida; flat++) {
+                        this._chromosomes[flat].mutar();
+                    }
+                    this._repetition++;
+                } else {
+                    this._lastValue = this._chromosomes[0].cost;
+                    this._repetition = 0;
+                }
                 if (this._callback) {
-                    this._callback(this._chromosomes[0]);
-                    //this._callback(this._chromosomes[this._currentGeneration % this._chromosomes.length]);
+                    this._callback(this._chromosomes[0], this._currentGeneration);
                 }
             }
             console.log("Done");
-            //if (callback) {
-            //    callback(this._chromosomes[0]);
-            //}
-            //setTimeout(() => { self.f(); }, 1000);
-            //while (this._currentGeneration <= this._maxGenerations) {
-            //    this._currentGeneration++;
-            //}
         };
 
         Simulator.prototype.f = function () {
@@ -73,7 +69,7 @@
                 self.f();
             }, 1000);
             if (this._callback) {
-                this._callback(this._chromosomes[(this._i++) % this._ncrhoms]);
+                this._callback(this._chromosomes[(this._i++) % this._numeroCromosomas]);
             }
         };
         return Simulator;

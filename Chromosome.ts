@@ -85,12 +85,9 @@
 
         public static cyclicMate(parent1: Chromosome, parent2: Chromosome, children1: Chromosome, children2: Chromosome): void {
 
-            //var results = [
-            //    new Chromosome(parent1.points, parent1._cutPoint, parent1._mutationProb)
-            //    , new Chromosome(parent1.points, parent1._cutPoint, parent2._mutationProb)
-            //];
 
-            //var useds = [new Array(parent1.length), new Array(parent2.length)];
+            children1.resetCost();
+            children2.resetCost();
             for (var j = 0; j < parent1.length; j++) {
                 children1.setPoint(j, null);
                 children2.setPoint(j, null);
@@ -110,6 +107,7 @@
                 startPointS1 = parent1.getPosition(i);
                 ax2 = i;
             }
+
             ax1 = parent2.getPoint(startPointS2);
             ax2 = null;
 
@@ -121,26 +119,16 @@
                 startPointS2 = parent2.getPosition(i);
                 ax2 = i;
             }
-            //console.log(parent1.toString());
-            //console.log(parent2.toString());
-            //console.log(children1.toString());
-            //console.log(children2.toString());
 
             for (var iii = 0; iii < parent1.length; iii++) {
                 if (children1.getPoint(iii) == null) {
                     children1.setPoint(iii, parent2.getPoint(iii));
-
                 }
-
                 if (children2.getPoint(iii) == null) {
                     children2.setPoint(iii, parent1.getPoint(iii));
-
                 }
 
             }
-
-            children1.resetCost();
-            children2.resetCost();
         }
     }
 

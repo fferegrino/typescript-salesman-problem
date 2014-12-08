@@ -2,12 +2,29 @@
 /// <reference path="Point.ts" />
 var View;
 (function (View) {
-    var nodeColor = "#ff0";
+    var nodeColor = "#f00";
     var edgeColor = "#f00";
     var sgma;
     var innerPoints;
     function createSigma(container, points) {
+        var settings = new Object();
+        settings["mouseWheelEnabled"] = false;
         sgma = new sigma(container);
+        sgma.bind('clickStage', function (event) {
+            //sgma.graph.addNode({
+            //    id: 'n' + event.data.captor.clientX + event.data.captor.clientY,
+            //    label: 'n' + event.data.captor.clientX + event.data.captor.clientY,
+            //    x: event.data.captor.x,
+            //    y: event.data.captor.y,
+            //    size: 1,
+            //    color: nodeColor
+            //});
+            //sgma.refresh();
+            //console.log(event);
+        });
+
+        //var settings = '{ mouseEnabled: false }';
+        sgma.settings(settings);
         innerPoints = points;
         drawNodes();
         sgma.refresh();
@@ -58,6 +75,7 @@ var View;
         for (var i = 0; i < innerPoints.length; i++) {
             sgma.graph.addNode({
                 id: innerPoints[i].name,
+                label: innerPoints[i].name,
                 x: innerPoints[i].x,
                 y: innerPoints[i].y,
                 size: 1,

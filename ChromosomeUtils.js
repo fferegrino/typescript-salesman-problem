@@ -1,7 +1,7 @@
 ﻿var Tsp;
 (function (Tsp) {
     function nextInt(min, max) {
-        return Math.floor((Math.random() * max) + min);
+        return Math.floor((Math.random() * (max - min)) + min);
     }
     Tsp.nextInt = nextInt;
     function next() {
@@ -17,36 +17,13 @@
     Tsp.truncate = truncate;
     ;
 
-    function quickSort(c, left, right) {
-        var i = left;
-        var j = right;
-        var mid = Math.floor((i + j) / 2);
-
-        //console.log("sort " + i + " " + j + " " + mid);
-        var p = c[mid];
-        var tmp;
-        while (i <= j) {
-            while (c[i].cost < p.cost) {
-                i++;
-            }
-            while (c[j].cost > p.cost) {
-                j--;
-            }
-            if (i <= j) {
-                tmp = c[i];
-                c[i] = c[j];
-                c[j] = tmp;
-                i++;
-                j--;
-            }
-            if (left < j) {
-                quickSort(c, left, j);
-            }
-            if (i < right) {
-                quickSort(c, i, right);
-            }
-        }
+    function chromosomeComparer(a, b) {
+        if (a.cost < b.cost)
+            return -1;
+        if (a.cost > b.cost)
+            return 1;
+        return 0;
     }
-    Tsp.quickSort = quickSort;
+    Tsp.chromosomeComparer = chromosomeComparer;
 })(Tsp || (Tsp = {}));
 //# sourceMappingURL=ChromosomeUtils.js.map

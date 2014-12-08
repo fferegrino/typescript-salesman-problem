@@ -6,18 +6,26 @@ importScripts('Simulator.js');
 var i = 0;
 var __points;
 var __simulator;
+var __generations;
+var __population;
 function startWork(pointsArray) {
     __points = new Array(pointsArray.length);
+
     for (var i = 0; i < pointsArray.length; i++) {
         __points[i] = new Tsp.Point(pointsArray[i]._name, pointsArray[i]._x, pointsArray[i]._y);
     }
-    __simulator = new Tsp.Simulator(__points, 40, 200);
+
+    __simulator = new Tsp.Simulator(__points, __population, __generations);
     __simulator.initialize();
-    __simulator.start(function (chromosome) {
-        postMessage(JSON.stringify(chromosome));
+    __simulator.start(function (chr, gen) {
+        var data = { chromosome: chr, generation: gen };
+        postMessage(JSON.stringify(data));
     });
 }
 
 self.onmessage = function (data) {
-    startWork(JSON.parse(data.data));
+    var obj = JSON.parse(data.data);
+    __generations = obj.generations;
+    __population = obj.population;
+    startWork(obj.nodes);
 }
