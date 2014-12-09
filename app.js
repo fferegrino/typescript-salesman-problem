@@ -1,67 +1,78 @@
-﻿//var cromosomas: Array<Tsp.Chromosome>;
+﻿// I/O elements:
+var generateButton;
+var startButton;
+var generationsInput;
+var populationInput;
+var pointsNumberInput;
+var maxRepeatingCountInput;
+var currentGenerationLabel;
+var currentSolutionLabel;
+
+// TSP related:
+var points;
+var generations;
+var population;
+var pointsQty;
+var maxRepeatingCount;
+
+// worker:
+var worker;
+
 window.onload = function () {
-    var container = document.getElementById('container');
-    var startbtn = document.getElementById('startbtn');
+    worker = new Worker('worker.js');
 
-    var generacionesInput = document.getElementById('generacionesInput');
-    var generacionesValue = document.getElementById('generacionesValue');
+    // UI wiring
+    generateButton = document.getElementById('generateButton');
+    startButton = document.getElementById('startButton');
 
-    var poblacionInput = document.getElementById('poblacionInput');
-    var fitValue = document.getElementById('fitValue');
+    generationsInput = document.getElementById('generationsInput');
+    populationInput = document.getElementById('populationInput');
+    pointsNumberInput = document.getElementById('pointsNumberInput');
+    maxRepeatingCountInput = document.getElementById('maxRepeatingCountInput');
 
-    var mutacion = 0.4;
-    var longitudCorte = 4;
+    currentGenerationLabel = document.getElementById('currentGenerationLabel');
+    currentSolutionLabel = document.getElementById('currentSolutionLabel');
 
-    var points = [];
-    for (var a = 0; a < 60; a++) {
-        var x = Tsp.nextInt(0, 8) + Tsp.next();
-        var y = Tsp.nextInt(0, 4) + Tsp.next();
-        points.push(new Tsp.Point("N" + a, x, y));
-    }
-
-    //    new Tsp.Point("A", 1, 1)
-    //    , new Tsp.Point("B", 6, 4)
-    //    , new Tsp.Point("C", 1, 4)
-    //    , new Tsp.Point("D", 6, 1.2)
-    //    , new Tsp.Point("E", 2, 1.5)
-    //    , new Tsp.Point("F", 3, 1.2)
-    //    , new Tsp.Point("G", 4, 1.5)
-    //    , new Tsp.Point("H", 5, 1.25)
-    //    , new Tsp.Point("I", 4.8, 1.2)
-    //    , new Tsp.Point("J", 1.5, 2)
-    //    , new Tsp.Point("K", 2.9, 3)
-    //    , new Tsp.Point("L", 3.1, 3.2)
-    //    , new Tsp.Point("M", 3.8, 3.4)
-    //    , new Tsp.Point("N", 2.8, 3.7)
-    //];
-    //cromosomas = new Array(4);
-    //cromosomas[0] = new Tsp.Chromosome(points, 0, 0.5);
-    //cromosomas[1] = new Tsp.Chromosome(points, 0, 0.5);
-    //cromosomas[2] = new Tsp.Chromosome(points, 0, 0.5);
-    //cromosomas[3] = new Tsp.Chromosome(points, 0, 0.5);;
-    //document.getElementById('btn').onclick = () => { cruza(); };
-    //cromosomas.sort(Tsp.chromosomeComparer);
-    //dibuja();
-    View.createSigma('sigma-container', points);
-
-    var worker = new Worker('worker.js');
-    worker.onmessage = function (evt) {
-        var data = JSON.parse(evt.data);
-        console.log(data.chromosome);
-        View.replaceEdgesFromArray(data.chromosome.points);
-        generacionesValue.innerText = data.generation;
-        fitValue.innerText = Tsp.truncate(data.chromosome._cost, 4).toString();
-        //console.log(chr._cost);
-    };
-
-    startbtn.onclick = function (evt) {
-        var settings = {
-            nodes: points,
-            generations: generacionesInput.value,
-            population: poblacionInput.value
-        };
-        var str = JSON.stringify(settings);
-        worker.postMessage(str);
-    };
+    // Bind events:
+    generateButton.onclick = generateButtonClick;
+    startButton.onclick = startButtonClick;
+    worker.onmessage = workerUpdate;
 };
+
+function startButtonClick(event) {
+    var settings = {
+        nodes: points,
+        generations: generations,
+        population: population,
+        maxRepetitions: maxRepeatingCount
+    };
+    var str = JSON.stringify(settings);
+    worker.postMessage(str);
+}
+
+function generateButtonClick(event) {
+    population = parseInt(populationInput.value);
+    generations = parseInt(generationsInput.value);
+    pointsQty = parseInt(pointsNumberInput.value);
+    maxRepeatingCount = parseInt(maxRepeatingCountInput.value);
+    if (true && !isNaN(population) && !isNaN(generations) && !isNaN(pointsQty)) {
+        points = new Array(pointsQty);
+        for (var a = 0; a < pointsQty; a++) {
+            var x = Tsp.nextInt(0, 8) + Tsp.next();
+            var y = Tsp.nextInt(0, 4) + Tsp.next();
+            points[a] = new Tsp.Point("N" + a, x, y);
+        }
+        View.createSigma('sigma-container', points);
+    } else {
+        console.log("error");
+    }
+}
+
+function workerUpdate(evt) {
+    var data = JSON.parse(evt.data);
+    console.log(data.chromosome);
+    View.replaceEdgesFromArray(data.chromosome.points);
+    currentGenerationLabel.innerText = data.generation;
+    currentSolutionLabel.innerText = Tsp.truncate(data.chromosome._cost, 5).toString();
+}
 //# sourceMappingURL=app.js.map

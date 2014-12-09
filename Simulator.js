@@ -1,7 +1,7 @@
 ﻿var Tsp;
 (function (Tsp) {
     var Simulator = (function () {
-        function Simulator(points, numeroCromosomas, maxGenerations) {
+        function Simulator(points, numeroCromosomas, maxGenerations, maxRepetitions) {
             this._numeroCromosomas = 10;
             this._i = 0;
             this._lastValue = 0;
@@ -9,13 +9,13 @@
             this._currentGeneration = 0;
             this._maxGenerations = maxGenerations;
             this._points = points;
-            this._poblacionNoFavorecida = Math.floor(numeroCromosomas / 2);
-            this._poblacionFavorecida = Math.floor(this._poblacionNoFavorecida / 2);
             this._numeroCromosomas = numeroCromosomas;
-            this._chromosomes = new Array(this._numeroCromosomas);
-            console.log("Poblacion total " + numeroCromosomas + "; Poblacion favorecida: " + this._poblacionFavorecida + "; Poblacion no favorecida " + this._poblacionNoFavorecida);
+            this._maxRepetitions = maxRepetitions;
         }
         Simulator.prototype.initialize = function (callback) {
+            this._chromosomes = new Array(this._numeroCromosomas);
+            this._poblacionNoFavorecida = Math.floor(this._numeroCromosomas / 2);
+            this._poblacionFavorecida = Math.floor(this._poblacionNoFavorecida / 2);
             for (var i = 0; i < this._numeroCromosomas; i++) {
                 this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.7);
             }
@@ -23,13 +23,13 @@
             if (callback) {
                 callback(this._points);
             }
+            console.log("Poblacion total " + this._numeroCromosomas + "; Poblacion favorecida: " + this._poblacionFavorecida + "; Poblacion no favorecida " + this._poblacionNoFavorecida);
         };
 
         Simulator.prototype.start = function (callback) {
             this._callback = callback;
             var self = this;
-            while (this._currentGeneration <= this._maxGenerations && this._repetition < 100) {
-                //console.log(this._currentGeneration);
+            while (this._currentGeneration <= this._maxGenerations && this._repetition < this._maxRepetitions) {
                 this._currentGeneration++;
                 var offset = this._poblacionNoFavorecida;
                 for (var j = 0; j < this._poblacionFavorecida; j++) {
@@ -45,8 +45,6 @@
                     }
                 }
                 this._chromosomes.sort(Tsp.chromosomeComparer);
-
-                //console.log(this._repetition);
                 if (this._lastValue == this._chromosomes[0].cost) {
                     for (var flat = 0; flat < this._poblacionFavorecida; flat++) {
                         this._chromosomes[flat].mutar();
