@@ -1,4 +1,4 @@
-﻿
+﻿importScripts('randomjs/Alea.js');
 importScripts('Chromosome.js');
 importScripts('ChromosomeUtils.js');
 importScripts('Point.js');

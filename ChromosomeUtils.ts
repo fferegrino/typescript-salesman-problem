@@ -1,9 +1,10 @@
-﻿module Tsp {
+﻿var alea = new Tsp.Alea(Date.now);
+module Tsp {
     export function nextInt(min: number, max: number): number {
-        return Math.floor((Math.random() * (max - min)) + min);
+        return Math.floor((alea.random() * (max - min)) + min);
     }
     export function next(): number {
-        return Math.random();
+        return alea.random();
     }
 
     export function truncate(n: number, digits: number): number {

@@ -74,7 +74,7 @@
         };
 
         Chromosome.prototype.mutar = function () {
-            if (this._mutationProb < Tsp.next()) {
+            if (this._mutationProb > Tsp.next()) {
                 var i = Tsp.nextInt(0, this._length - 1);
                 var j = Tsp.nextInt(0, this._length - 1);
                 var point = this.points[i];

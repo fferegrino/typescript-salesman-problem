@@ -72,13 +72,13 @@
         }
 
         public mutar(): boolean {
-            if (this._mutationProb < Tsp.next()) {
-                var i = Tsp.nextInt(0, this._length - 1);
-                var j = Tsp.nextInt(0, this._length - 1)
-                var point = this.points[i];
-                this.points[i] = this.points[j];
-                this.points[j] = point;
-                return true;
+            if (this._mutationProb > Tsp.next()) {
+            var i = Tsp.nextInt(0, this._length - 1);
+            var j = Tsp.nextInt(0, this._length - 1);
+            var point = this.points[i];
+            this.points[i] = this.points[j];
+            this.points[j] = point;
+            return true;
             }
             return false;
         }
@@ -99,7 +99,7 @@
 
             var ax1 = parent1.getPoint(startPointS1);
             var ax2: Point;
-            
+
             while (!ax1.equals(ax2)) {
                 ax2 = parent1.getPoint(startPointS1);
                 children1.setPoint(startPointS1, ax2);

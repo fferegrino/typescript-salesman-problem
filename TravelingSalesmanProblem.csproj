@@ -20,6 +20,14 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="index.html" />
+    <Content Include="randomjs\Alea.js" />
+    <Content Include="randomjs\KISS07.js" />
+    <Content Include="randomjs\Kybos.js" />
+    <Content Include="randomjs\LFib.js" />
+    <Content Include="randomjs\LFIB4.js" />
+    <Content Include="randomjs\Mash.js" />
+    <Content Include="randomjs\MRG32k3a.js" />
+    <Content Include="randomjs\Xorshift03.js" />
     <Content Include="sigmajs\plugins\sigma.layout.forceAtlas2.min.js" />
     <Content Include="sigmajs\plugins\sigma.parsers.gexf.min.js" />
     <Content Include="sigmajs\plugins\sigma.parsers.json.min.js" />
@@ -38,6 +46,7 @@
     <TypeScriptCompile Include="Chromosome.ts" />
     <TypeScriptCompile Include="ChromosomeUtils.ts" />
     <TypeScriptCompile Include="Point.ts" />
+    <TypeScriptCompile Include="randomjs\Alea.ts" />
     <TypeScriptCompile Include="SigmaAdapter.ts" />
     <TypeScriptCompile Include="sigmajs\sigmajs.d.ts" />
     <TypeScriptCompile Include="Simulator.ts" />

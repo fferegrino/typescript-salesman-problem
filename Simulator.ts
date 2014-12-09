@@ -29,7 +29,7 @@
             this._poblacionNoFavorecida = Math.floor(this._numeroCromosomas / 2);
             this._poblacionFavorecida = Math.floor(this._poblacionNoFavorecida / 2);
             for (var i = 0; i < this._numeroCromosomas; i++) {
-                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.7);
+                this._chromosomes[i] = new Tsp.Chromosome(this._points, 0, 0.8);
             }
             this._chromosomes.sort(Tsp.chromosomeComparer);
             if (callback) {

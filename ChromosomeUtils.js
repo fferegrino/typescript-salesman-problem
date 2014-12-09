@@ -1,11 +1,12 @@
-﻿var Tsp;
+﻿var alea = new Tsp.Alea(Date.now);
+var Tsp;
 (function (Tsp) {
     function nextInt(min, max) {
-        return Math.floor((Math.random() * (max - min)) + min);
+        return Math.floor((alea.random() * (max - min)) + min);
     }
     Tsp.nextInt = nextInt;
     function next() {
-        return Math.random();
+        return alea.random();
     }
     Tsp.next = next;
 
